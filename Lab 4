@@ -1,0 +1,73 @@
+using System;
+using System.Linq;
+using System.Reflection;
+
+public class Program
+{
+    public class MyClass
+    {
+        public int publicField;
+        private string privateField;
+        protected bool protectedField;
+        internal double internalField;
+        protected internal decimal protectedInternalField;
+
+        public void Method1()
+        {
+            Console.WriteLine("This is Method1");
+        }
+
+        private void Method2()
+        {
+            Console.WriteLine("This is Method2");
+        }
+
+        protected void Method3()
+        {
+            Console.WriteLine("This is Method3");
+        }
+    }
+    static void Main(string[] args)
+    {
+        // 1. Створення об'єкта класу MyClass
+        MyClass myObj = new MyClass();
+
+        // 2. Робота з Type та TypeInfo:
+        Console.WriteLine("1) Робота з Type та TypeInfo:");
+        Type type = typeof(MyClass);
+        Console.WriteLine($"Type name: {type.Name}");
+        Console.WriteLine($"Is public: {type.IsPublic}");
+        Console.WriteLine($"Is sealed: {type.IsSealed}");
+        Console.WriteLine($"Is class: {type.IsClass}");
+        Console.WriteLine($"Base type: {type.BaseType.Name}");
+
+        TypeInfo typeInfo = type.GetTypeInfo();
+        Console.WriteLine($"Number of fields: {typeInfo.DeclaredFields.Count()}");
+        Console.WriteLine($"Number of methods: {typeInfo.DeclaredMethods.Count()}");
+        Console.WriteLine($"Is abstract: {typeInfo.IsAbstract}");
+        Console.WriteLine($"Is nested: {typeInfo.IsNested}");
+        Console.WriteLine("\n");
+        // 3. Робота з MemberInfo:
+        Console.WriteLine("2) Робота з MemberInfo");
+        MemberInfo[] members = type.GetMembers();
+        foreach (MemberInfo member in members)
+        {
+            Console.WriteLine($"{member.MemberType}: {member.Name}");
+        }
+        Console.WriteLine("\n");
+        // 4. Робота з FieldInfo:
+        Console.WriteLine("3) Робота з FieldInfo");
+        FieldInfo[] fields = type.GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
+        foreach (FieldInfo field in fields)
+        {
+            Console.WriteLine($"Field: {field.Name}, Type: {field.FieldType.Name}");
+        }
+        Console.WriteLine("\n");
+        // 5. Робота з MethodInfo:
+        Console.WriteLine("4) Робота з MethodInfo");
+        MethodInfo methodInfo = type.GetMethod("Method1");
+        methodInfo.Invoke(myObj, null);
+        Console.WriteLine("\n");
+        Console.ReadKey();
+    }
+}
