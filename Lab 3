@@ -1,0 +1,137 @@
+//Task 1
+
+using System;
+using System.Threading;
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Головний метод починає виконання");
+
+        Thread t1 = new Thread(DoTask1);
+        t1.Start();
+        Thread t2 = new Thread(DoTask2);
+        t2.Start();
+        Thread t3 = new Thread(DoTask3);
+        t3.Start();
+
+        t1.Join();
+        t2.Join();
+        t3.Join();
+
+        Console.WriteLine("Головний метод завершив виконання");
+        Console.ReadKey();
+    }
+
+    static void DoTask1()
+    {
+        Console.WriteLine("Метод DoTask1() починає виконання");
+
+        // Перевірка кратності числа
+         int i = 34; 
+        
+         if (i % 2 == 0)
+         {
+             Console.WriteLine($"{i} - парне число");
+         }
+         else
+         {
+             Console.WriteLine($"{i} - непарне число");
+         }
+         Thread.Sleep(500);
+        
+
+        Console.WriteLine("Метод DoTask1() завершив виконання");
+    }
+
+    static void DoTask2()
+    {
+        Console.WriteLine("Метод DoTask2() починає виконання");
+
+        // Виведення рядка
+        Console.WriteLine("Привіт з методу DoTask2()!");
+        Thread.Sleep(800);
+
+        Console.WriteLine("Метод DoTask2() завершив виконання");
+    }
+
+    static void DoTask3()
+    {
+        Console.WriteLine("Метод DoTask3() починає виконання");
+
+        // Генерація випадкових чисел та їх виведення
+        Random rnd = new Random();
+        for (int i = 0; i < 1; i++)
+        {
+            int num = rnd.Next(1, 101);
+            Console.WriteLine($"Згенероване число: {num}");
+            Thread.Sleep(1000);
+        }
+
+        Console.WriteLine("Метод DoTask3() завершив виконання");
+    }
+}
+
+
+
+
+
+
+//Task 2
+
+using System;
+using System.Threading.Tasks;
+
+class Program
+{
+    static async Task Main()
+    {
+        Console.WriteLine("Головний метод починає виконання");
+
+        await DoTask1Async();
+        await DoTask2Async();
+        await DoTask3Async();
+
+        Console.WriteLine("Головний метод завершив виконання");
+        Console.ReadKey();
+    }
+
+    static async Task DoTask1Async()
+    {
+        Console.WriteLine("Метод DoTask1Async() починає виконання");
+
+        // Завантаження даних з інтернету
+        await Task.Delay(3000);
+
+        Console.WriteLine("Метод DoTask1Async() завершив виконання");
+    }
+
+    static async Task DoTask2Async()
+    {
+        Console.WriteLine("Метод DoTask2Async() починає виконання");
+
+        // Обчислення складної математичної формули
+        int result = await Task.Run(() => {
+            int sum = 0;
+            for (int i = 1; i <= 1000000; i++)
+            {
+                sum += i;
+            }
+            return sum;
+        });
+
+        Console.WriteLine($"Метод DoTask2Async() завершив виконання з результатом: {result}");
+    }
+
+    static async Task DoTask3Async()
+    {
+        Console.WriteLine("Метод DoTask3Async() починає виконання");
+
+        // Очікування вводу користувача
+        await Task.Run(() => Console.ReadKey());
+
+        Console.WriteLine("Метод DoTask3Async() завершив виконання");
+    }
+}
+
